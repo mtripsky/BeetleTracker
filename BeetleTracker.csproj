@@ -10,12 +10,23 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
+    <PackageReference Include="Autofac" Version="4.9.4" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="connectionStrings.xml" />
+    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\Database\" />
+    <Compile Remove="Models\Database\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Data\" />
+    <Folder Include="IoC\" />
+    <Folder Include="Views\Projects\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
   </ItemGroup>
 </Project>
