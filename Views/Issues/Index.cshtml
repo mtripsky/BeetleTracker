@@ -1,0 +1,68 @@
+﻿@model IEnumerable<BeetleTracker.Models.Issue>
+
+@{
+    ViewData["Title"] = "Issues";
+}
+
+<h1>Issues</h1>
+
+<p>
+    <a asp-action="Create">Add New Issue</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reporter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Priority)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Name, "Details", new {id = item.Id})
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Reporter)
+            </td>
+            <td>
+                <span class="badge badge-issue-status @item.Status.GetColorBadge()">
+                    <b>@item.Status.GetDescription()</b>
+                </span>
+            </td>
+            <td>
+                <b>@item.Priority.GetDescription()</b>
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @*@Html.ActionLink("Details", "Details", new { id = item.Id })*@
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
