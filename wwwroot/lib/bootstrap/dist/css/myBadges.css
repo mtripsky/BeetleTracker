@@ -1,0 +1,26 @@
+﻿/*@import "bootstrap-yeti.css";*/
+
+.badge-issue-status {
+    color: #fff;
+    font-size: 90%;
+}
+
+.badge-issue-status-open {
+    background-color: #008cba; 
+}
+
+.badge-issue-status-inprogress {
+    background-color: #F04124;
+}
+
+.badge-issue-status-tobetested {
+    background-color: #E99002;
+}
+
+.badge-issue-status-reopen {
+    background-color: #9e6d29;
+}
+
+.badge-issue-status-closed {
+    background-color: #43ac6a;
+}
