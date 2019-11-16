@@ -17,7 +17,7 @@ namespace BeetleTracker.Models
 
         [BsonElement("ProjectLead")]
         [Required]
-        public string ProjectLead { get; set; }
+        public string ProjectLead { get; set; }  // string must be replaced by User
 
         [BsonElement("Category")]
         public Category Category { get; set; }

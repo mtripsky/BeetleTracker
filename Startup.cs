@@ -40,6 +40,7 @@ namespace BeetleTracker
             // Autofac IoC
             var builder = new ContainerBuilder();
             builder.RegisterModule(new ProjectModule(Configuration));
+            builder.RegisterModule(new IssueModule(Configuration));
             builder.Populate(services);
 
             var container = builder.Build();

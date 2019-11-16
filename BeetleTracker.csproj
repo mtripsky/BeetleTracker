@@ -17,6 +17,7 @@
   <ItemGroup>
     <Content Remove="connectionStrings.xml" />
     <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
+    <Content Remove="Views\Shared\DisplayTemplates\Enum.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Models\Database\User.cs" />
@@ -25,6 +26,7 @@
     <Folder Include="Data\" />
     <Folder Include="IoC\" />
     <Folder Include="Views\Projects\" />
+    <Folder Include="Views\Issues\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
