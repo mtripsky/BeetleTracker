@@ -1,4 +1,7 @@
-﻿@model IEnumerable<BeetleTracker.Models.Issue>
+﻿@using X.PagedList.Mvc.Core;
+@using X.PagedList.Mvc.Common;
+    
+@model X.PagedList.IPagedList<BeetleTracker.Models.Issue>
 
 @{
     ViewData["Title"] = "Issues";
@@ -13,22 +16,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.First().Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Created)
+                @Html.ActionLink("Created", "Index", new { sortBy = ViewBag.CreatedSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Updated)
+                @Html.ActionLink("Updated", "Index", new { sortBy = ViewBag.UpdatedSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Reporter)
+                @Html.ActionLink("Reporter", "Index", new { sortBy = ViewBag.ReporterSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Status)
+                @Html.ActionLink("Status", "Index", new { sortBy = ViewBag.StatusSort })
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Priority)
+                @Html.ActionLink("Priority", "Index", new { sortBy = ViewBag.PrioritySort })
             </th>
             <th></th>
         </tr>
@@ -36,33 +39,45 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr>
-            <td>
-                @Html.ActionLink(item.Name, "Details", new {id = item.Id})
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Created)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Updated)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Reporter)
-            </td>
-            <td>
-                <span class="badge badge-issue-status @item.Status.GetColorBadge()">
-                    <b>@item.Status.GetDescription()</b>
-                </span>
-            </td>
-            <td>
-                <b>@item.Priority.GetDescription()</b>
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @*@Html.ActionLink("Details", "Details", new { id = item.Id })*@
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Name, "Details", new { id = item.Id })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reporter)
+                </td>
+                <td>
+                    <span class="badge badge-issue-status @item.Status.GetColorBadge()">
+                        <b>@item.Status.GetDescription()</b>
+                    </span>
+                </td>
+                <td>
+                    <b>@item.Priority.GetDescription()</b>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
         }
     </tbody>
 </table>
+@*<div id="Paging" style="text-align:center">*@
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    of @Model.PageCount*@
+@Html.PagedListPager(
+        Model,
+        page => Url.Action("Index", new { page, sortBy = Context.Request.Query["sortBy"]}),
+        new PagedListRenderOptionsBase()
+        {
+            Display = PagedListDisplayMode.IfNeeded,
+            LiElementClasses = new[] { "page-item" },
+            ContainerDivClasses = new[] { "pagination-sm" },
+            PageClasses = new[] { "page-link" }
+        })

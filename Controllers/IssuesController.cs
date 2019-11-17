@@ -1,16 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using BeetleTracker.Data;
 using BeetleTracker.Models;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace BeetleTracker.Controllers
 {
     public class IssuesController : Controller
     {
         private readonly IEntityBaseRepository<Issue> _repository;
+        private readonly int _pageSize = 10;  // should be in constructor
+        private int _pageIndex;  // should be in constructor
 
         public IssuesController(IEntityBaseRepository<Issue> repository)
         {
@@ -18,9 +19,51 @@ namespace BeetleTracker.Controllers
         }
 
         // GET: Issues/
-        public IActionResult Index()
+        public IActionResult Index(int? page, [FromQuery(Name = "sortBy")] string sortBy)
         {
-            return View(_repository.GetAll());
+            _pageIndex = page.HasValue ? Convert.ToInt32(page) : 1;
+            ViewBag.CreatedSort = String.IsNullOrEmpty(sortBy) ? "Created desc" : "";
+            ViewBag.UpdatedSort = sortBy == "Updated" ? "Updated desc" : "Updated";
+            ViewBag.StatusSort = sortBy == "Status" ? "Status desc" : "Status";
+            ViewBag.ReporterSort = sortBy == "Reporter" ? "Reporter desc" : "Reporter";
+            ViewBag.PrioritySort = sortBy == "Priority" ? "Priority desc" : "Priority";
+
+            var issues = _repository.GetAll();
+
+            switch (sortBy)
+            {
+                case "Updated desc":
+                    issues = issues.OrderByDescending(x => x.Updated);
+                    break;
+                case "Updated":
+                    issues = issues.OrderBy(x => x.Updated);
+                    break;
+                case "Reporter desc":
+                    issues = issues.OrderByDescending(x => x.Reporter);
+                    break;
+                case "Priority":
+                    issues = issues.OrderBy(x => x.Priority);
+                    break;
+                case "Priority desc":
+                    issues = issues.OrderByDescending(x => x.Priority);
+                    break;
+                case "Reporter":
+                    issues = issues.OrderBy(x => x.Reporter);
+                    break;
+                case "Status desc":
+                    issues = issues.OrderByDescending(x => x.Status);
+                    break;
+                case "Status":
+                    issues = issues.OrderBy(x => x.Status);
+                    break;
+                case "Created desc":
+                    issues = issues.OrderByDescending(x => x.Created);
+                    break;
+                default:
+                    issues = issues.OrderBy(x => x.Created);
+                    break;
+            }
+            return View(issues.ToPagedList(_pageIndex, _pageSize));
         }
 
         // GET: Issues/Create
@@ -54,12 +97,12 @@ namespace BeetleTracker.Controllers
                 return NotFound();
             }
 
-            var project = _repository.GetSingle(id);
-            if (project == null)
+            var issue = _repository.GetSingle(id);
+            if (issue == null)
             {
                 return NotFound();
             }
-            return View(project);
+            return View(issue);
         }
 
         // POST: Issues/Edit/:id
@@ -80,10 +123,8 @@ namespace BeetleTracker.Controllers
                 _repository.Update(id, issue);
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                return View(issue);
-            }
+
+            return View(issue);
         }
 
         // GET: Issues/Delete/:id
@@ -94,12 +135,12 @@ namespace BeetleTracker.Controllers
                 return NotFound();
             }
 
-            var project = _repository.GetSingle(id);
-            if (project == null)
+            var issue = _repository.GetSingle(id);
+            if (issue == null)
             {
                 return NotFound();
             }
-            return View(project);
+            return View(issue);
         }
 
         // POST: Issues/Delete/:id
@@ -109,9 +150,9 @@ namespace BeetleTracker.Controllers
         {
             try
             {
-                var project = _repository.GetSingle(id);
+                var issue = _repository.GetSingle(id);
 
-                if (project == null)
+                if (issue == null)
                 {
                     return NotFound();
                 }

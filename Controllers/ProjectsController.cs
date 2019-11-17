@@ -72,10 +72,8 @@ namespace BeetleTracker.Controllers
                 _repository.Update(id, project);
                 return RedirectToAction(nameof(Index));
             }
-            else
-            {
-                return View(project);
-            }
+
+            return View(project);
         }
 
         // GET: Projects/Delete/:id

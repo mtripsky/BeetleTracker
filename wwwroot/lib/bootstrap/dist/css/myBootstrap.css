@@ -24,3 +24,7 @@
 .badge-issue-status-closed {
     background-color: #43ac6a;
 }
+
+.pagination-issue-table {
+    text-align:right
+}
