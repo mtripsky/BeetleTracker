@@ -1,6 +1,9 @@
 # appsettings
 appsettings*
 
+.vs
+.vscode
+
 # Autosave files
 *~
 
