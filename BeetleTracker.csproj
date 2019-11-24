@@ -13,6 +13,7 @@
     <PackageReference Include="Autofac" Version="4.9.4" />
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="1.1.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,6 +29,10 @@
     <Folder Include="IoC\" />
     <Folder Include="Views\Projects\" />
     <Folder Include="Views\Issues\" />
+    <Folder Include="Models\AccountViewModels\" />
+    <Folder Include="Models\ManageViewModels\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\Manage\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
