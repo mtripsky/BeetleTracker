@@ -1,5 +1,4 @@
-﻿using System;
-using Autofac;
+﻿using Autofac;
 using BeetleTracker.Data;
 using BeetleTracker.Models;
 using Microsoft.Extensions.Configuration;
@@ -19,12 +18,12 @@ namespace BeetleTracker.IoC
         {
             builder.RegisterType<DatabaseClient<Project>>()
                 .As<IDatabaseClient<Project>>()
-                .WithParameter("connectionString", _config.GetConnectionString("Connection"))
-                .WithParameter("dbName", _config.GetConnectionString("ProjectDatabaseName"));
+                .WithParameter("connectionString", _config.GetSection("MongoDbSettings")["ConnectionString"])
+                .WithParameter("dbName", _config.GetSection("MongoDbSettings")["DatabaseName"]);
 
             builder.RegisterType<EntityBaseRepository<Project>>()
                 .As<IEntityBaseRepository<Project>>()
-                .WithParameter("name", _config.GetConnectionString("ProjectsCollectionName"));
+                .WithParameter("name", _config.GetSection("MongoDbSettings")["ProjectsCollectionName"]);
         }
     }
 }

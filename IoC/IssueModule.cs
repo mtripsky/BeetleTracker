@@ -19,12 +19,12 @@ namespace BeetleTracker.IoC
         {
             builder.RegisterType<DatabaseClient<Issue>>()
                 .As<IDatabaseClient<Issue>>()
-                .WithParameter("connectionString", _config.GetConnectionString("Connection"))
-                .WithParameter("dbName", _config.GetConnectionString("IssueDatabaseName"));
+                .WithParameter("connectionString", _config.GetSection("MongoDbSettings")["ConnectionString"])
+                .WithParameter("dbName", _config.GetSection("MongoDbSettings")["DatabaseName"]);
 
             builder.RegisterType<EntityBaseRepository<Issue>>()
                 .As<IEntityBaseRepository<Issue>>()
-                .WithParameter("name", _config.GetConnectionString("IssuesCollectionName"));
+                .WithParameter("name", _config.GetSection("MongoDbSettings")["IssuesCollectionName"]);
         }
     }
 }
