@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Newtonsoft.Json
+<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8" />
@@ -17,6 +18,15 @@
                   integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" />
         </environment>
         <link rel="stylesheet" href="~/css/site.css" />
+        <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+        <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+        <script>
+            function onUserFiltering(e) {
+                var query = new ej.data.Query();
+                query = (e.text !== '') ? query.where('Text', 'contains', e.text, true) : query;
+                e.updateData(@Html.Raw(JsonConvert.SerializeObject(ViewBag.Users)), query)
+        }
+        </script>
     </head>
     <body>
         @*<header>
@@ -111,7 +121,7 @@
             </script>
         </environment>
         <script src="~/js/site.js" asp-append-version="true"></script>
-
+        <ejs-scripts></ejs-scripts>
         @RenderSection("Scripts", required: false)
     </body>
 </html>
