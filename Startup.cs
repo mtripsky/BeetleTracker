@@ -8,7 +8,7 @@ using AspNetCore.Identity.MongoDbCore.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using BeetleTracker.IoC;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +56,9 @@ namespace BeetleTracker
             // Add framework services.
             //var mongoSettings = Configuration.GetSection(nameof(MongoDbSettings));
             var settings = Configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>();
+            
+            var syncfusion = Configuration.GetSection(nameof(Syncfusion))["Key"];
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense(syncfusion);
 
             services.AddSingleton<MongoDbSettings>(settings);
             services.AddIdentity<ApplicationUser, MongoIdentityRole>()
@@ -68,6 +71,8 @@ namespace BeetleTracker
             var builder = new ContainerBuilder();
             builder.RegisterModule(new ProjectModule(Configuration));
             builder.RegisterModule(new IssueModule(Configuration));
+            builder.RegisterModule(new ApplicationUserModule(Configuration));
+            builder.RegisterModule<MapperModule>();
             builder.Populate(services);
 
             var container = builder.Build();

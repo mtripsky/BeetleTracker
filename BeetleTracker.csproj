@@ -1,40 +1,41 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
-
-
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
-    <PackageReference Include="MongoDB.Driver" Version="2.9.3" />
-    <PackageReference Include="Autofac" Version="4.9.4" />
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1" />
-    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1" />
-    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="1.1.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Remove="connectionStrings.xml" />
-    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
-    <Content Remove="Views\Shared\DisplayTemplates\Enum.cshtml" />
+    <PackageReference Include="Microsoft.AspNetCore.App"/>
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All"/>
+    <PackageReference Include="MongoDB.Driver" Version="2.9.3"/>
+    <PackageReference Include="Autofac" Version="4.9.4"/>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="5.0.1"/>
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.9.1"/>
+    <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="1.1.1"/>
+    <PackageReference Include="AutoMapper" Version="9.0.0"/>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3"/>
+    <PackageReference Include="Syncfusion.EJ2.AspNet.Core" Version="17.3.0.31"/>
   </ItemGroup>
   <ItemGroup>
-    <Compile Remove="Models\Database\User.cs" />
+    <Content Remove="connectionStrings.xml"/>
+    <Content Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css"/>
+    <Content Remove="Views\Shared\DisplayTemplates\Enum.cshtml"/>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="IoC\" />
-    <Folder Include="Views\Projects\" />
-    <Folder Include="Views\Issues\" />
-    <Folder Include="Models\AccountViewModels\" />
-    <Folder Include="Models\ManageViewModels\" />
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Manage\" />
+    <Compile Remove="Models\Database\User.cs"/>
   </ItemGroup>
   <ItemGroup>
-    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css" />
+    <Folder Include="Data\"/>
+    <Folder Include="IoC\"/>
+    <Folder Include="Views\Projects\"/>
+    <Folder Include="Views\Issues\"/>
+    <Folder Include="Models\AccountViewModels\"/>
+    <Folder Include="Models\ManageViewModels\"/>
+    <Folder Include="Views\Account\"/>
+    <Folder Include="Views\Manage\"/>
+    <Folder Include="Models\ProjectViewModels\"/>
+    <Folder Include="Models\Mappers\"/>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\lib\bootstrap\dist\css\bootstrap-yeti.css"/>
   </ItemGroup>
 </Project>

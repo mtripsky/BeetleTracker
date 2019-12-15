@@ -1,4 +1,9 @@
-﻿@model BeetleTracker.Models.Project
+﻿@using System.Linq
+@using Syncfusion.EJ2
+@using Newtonsoft.Json
+@using BeetleTracker.Models.Entities;
+
+@model BeetleTracker.Models.ProjectViewModels.CreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -17,14 +22,16 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class='form-group'>
                 <label asp-for="ProjectLead" class="control-label"></label>
-                <input asp-for="ProjectLead" class="form-control" />
+                @Html.EJS().DropDownList("projectLead").Placeholder("").DataSource((IEnumerable<SelectListItem>)ViewBag.Users).AllowFiltering(true).Filtering("onUserFiltering").Fields(new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text="Text", Value = "Value" }).Render()
                 <span asp-validation-for="ProjectLead" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()">
+                    <option selected="selected"></option>
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -42,6 +49,8 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

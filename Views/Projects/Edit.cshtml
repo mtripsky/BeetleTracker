@@ -1,4 +1,9 @@
-﻿@model BeetleTracker.Models.Project
+﻿@using Syncfusion.EJ2
+@using Syncfusion.EJ2.DropDowns
+@using Newtonsoft.Json
+@using BeetleTracker.Models.Entities;
+
+@model BeetleTracker.Models.ProjectViewModels.EditViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -8,23 +13,25 @@
 
 <h4>Project</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+<form asp-action="Edit">
+    <div class="row">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class='form-group'>
                 <label asp-for="ProjectLead" class="control-label"></label>
-                <input asp-for="ProjectLead" class="form-control" />
+                @Html.EJS().DropDownList("projectLead").Value(new SelectListItem{ Text = @Model.ProjectLead}).AllowFiltering(true).Filtering("onUserFiltering").DataSource((IEnumerable<SelectListItem>)ViewBag.Users).Fields(new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text="Text", Value = "Value" }).Render()
                 <span asp-validation-for="ProjectLead" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
+                <select asp-for="Category" class="form-control" asp-items="Html.GetEnumSelectList<Category>()">
+                    <option selected="selected"></option>
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,14 +41,16 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
+                <a asp-action="Index">Back to List</a>
             </div>
-        </form>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+            <label asp-for="Description" class="control-label"></label>
+            <textarea asp-for="Description" rows="8" class="form-control"></textarea>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
