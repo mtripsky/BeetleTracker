@@ -10,14 +10,16 @@ namespace BeetleTracker.Data
 
         int Count();
 
-        T GetSingle(string id);
+        T GetSingle(Guid id);
+
+        T GetSingle(Func<T, bool> predicate);
 
         T Create(T entity);
 
-        void Update(string id, T entity);
+        void Update(Guid id, T entity);
 
         void Delete(T entity);
 
-        void Delete(string id);
+        void Delete(Guid id);
     }
 }

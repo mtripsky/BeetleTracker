@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using MongoDB.Driver;
 
 namespace BeetleTracker.Data
@@ -32,7 +32,7 @@ namespace BeetleTracker.Data
             _collection.DeleteOne(e => e.Id == entity.Id);
         }
 
-        public void Delete(string id)
+        public void Delete(Guid id)
         {
             _collection.DeleteOne(e => e.Id == id);
         }
@@ -42,12 +42,17 @@ namespace BeetleTracker.Data
             return _collection.Find(p => true).ToList();
         }
 
-        public T GetSingle(string id)
+        public T GetSingle(Guid id)
         {
             return _collection.Find(p => p.Id == id).FirstOrDefault();
         }
 
-        public void Update(string id, T entity)
+        public T GetSingle(Func<T, bool> predicate)
+        {
+            return _collection.AsQueryable().FirstOrDefault(predicate);
+        }
+
+        public void Update(Guid id, T entity)
         {
             _collection.ReplaceOne(e => e.Id == id, entity);
         }

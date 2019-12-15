@@ -13,9 +13,6 @@ namespace BeetleTracker.Data
             this.database = client.GetDatabase(dbName);
         }
 
-        public IMongoCollection<T> GetCollection(string name)
-        {
-            return database.GetCollection<T>(name);
-        }
+        public IMongoCollection<T> GetCollection(string name) => database.GetCollection<T>(name);
     }
 }

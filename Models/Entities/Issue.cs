@@ -3,13 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace BeetleTracker.Models
+namespace BeetleTracker.Models.Entities
 {
     public class Issue : IEntity
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [BsonElement("Name")]
         [Required]
