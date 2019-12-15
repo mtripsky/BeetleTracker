@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BeetleTracker.Models
+namespace BeetleTracker.Models.Entities
 {
     public enum IssuePriority
     {

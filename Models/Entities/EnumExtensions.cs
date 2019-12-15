@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace BeetleTracker.Models
+namespace BeetleTracker.Models.Entities
 {
     public static class HtmlExtensions
     {

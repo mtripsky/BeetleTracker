@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using BeetleTracker.Models.ManageViewModels;
 
 namespace MongoIdentitySample.Mvc.Controllers

@@ -1,6 +1,6 @@
 ﻿using Autofac;
 using BeetleTracker.Data;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace BeetleTracker.IoC

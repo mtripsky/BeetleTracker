@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using BeetleTracker.Controllers;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using BeetleTracker.Models.AccountViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

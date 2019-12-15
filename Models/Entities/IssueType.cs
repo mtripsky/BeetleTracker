@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace BeetleTracker.Models
+namespace BeetleTracker.Models.Entities
 {
     public enum IssueType
     {

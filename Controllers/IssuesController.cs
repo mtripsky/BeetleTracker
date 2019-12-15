@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using BeetleTracker.Data;
-using BeetleTracker.Models;
+using BeetleTracker.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 
@@ -90,7 +90,7 @@ namespace BeetleTracker.Controllers
         }
 
         // GET: Issues/Edit/:id
-        public ActionResult Edit(string id)
+        public ActionResult Edit(Guid id)
         {
             if (id == null)
             {
@@ -108,7 +108,7 @@ namespace BeetleTracker.Controllers
         // POST: Issues/Edit/:id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id, Issue issue)
+        public ActionResult Edit(Guid id, Issue issue)
         {
             if (id != issue.Id)
             {
@@ -128,7 +128,7 @@ namespace BeetleTracker.Controllers
         }
 
         // GET: Issues/Delete/:id
-        public ActionResult Delete(string id)
+        public ActionResult Delete(Guid id)
         {
             if (id == null)
             {
@@ -146,7 +146,7 @@ namespace BeetleTracker.Controllers
         // POST: Issues/Delete/:id
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(Guid id)
         {
             try
             {
@@ -168,7 +168,7 @@ namespace BeetleTracker.Controllers
         }
 
         // GET: Issues/Details/:id
-        public ActionResult Details(string id)
+        public ActionResult Details(Guid id)
         {
             if (id == null)
             {
