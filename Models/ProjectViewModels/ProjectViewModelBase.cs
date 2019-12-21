@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BeetleTracker.Models.ProjectViewModels
 {
-    public class ProjectViewModelBase
+    public abstract class ProjectViewModelBase
     {  
         public Guid Id {get; set;}
 

@@ -1,21 +1,33 @@
 ﻿using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Linq;
+using AutoMapper;
 using BeetleTracker.Data;
 using BeetleTracker.Models.Entities;
+using BeetleTracker.Models.IssueViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using X.PagedList;
 
 namespace BeetleTracker.Controllers
 {
     public class IssuesController : Controller
     {
-        private readonly IEntityBaseRepository<Issue> _repository;
+        private readonly IEntityBaseRepository<Issue> _issueRepo;
+        private readonly IEntityBaseRepository<ApplicationUser> _userRepo;
+        private readonly IMapper _mapper;
         private readonly int _pageSize = 10;  // should be in constructor
         private int _pageIndex;  // should be in constructor
 
-        public IssuesController(IEntityBaseRepository<Issue> repository)
+        public IssuesController(
+            IEntityBaseRepository<Issue> issueRepo,
+            IEntityBaseRepository<ApplicationUser> userRepo,
+            IMapper mapper)
         {
-            _repository = repository;
+            _issueRepo = issueRepo;
+            _userRepo = userRepo;
+            _mapper = mapper;
         }
 
         // GET: Issues/
@@ -28,7 +40,9 @@ namespace BeetleTracker.Controllers
             ViewBag.ReporterSort = sortBy == "Reporter" ? "Reporter desc" : "Reporter";
             ViewBag.PrioritySort = sortBy == "Priority" ? "Priority desc" : "Priority";
 
-            var issues = _repository.GetAll();
+            var issues = _issueRepo
+                .GetAll()
+                .Select(i => _mapper.Map<IndexViewModel>(i));
 
             switch (sortBy)
             {
@@ -63,30 +77,37 @@ namespace BeetleTracker.Controllers
                     issues = issues.OrderBy(x => x.Created);
                     break;
             }
+
             return View(issues.ToPagedList(_pageIndex, _pageSize));
         }
 
         // GET: Issues/Create
         public IActionResult Create()
-        {
+        {            
+            ViewBag.Users = CreateUsersViewList();
+
             return View();
         }
 
         // POST: Issues/Create/:project
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Issue issue)
+        public IActionResult Create(CreateViewModel createdIssue)
         {
             var timeNow = DateTime.Now;
-            issue.Created = timeNow;
-            issue.Updated = timeNow;
+            createdIssue.Created = timeNow;
+            createdIssue.Updated = timeNow;
+
+            ViewBag.Users = CreateUsersViewList();
 
             if (ModelState.IsValid)
             {
-                _repository.Create(issue);
+                var issue = _mapper.Map<Issue>(createdIssue);
+                _issueRepo.Create(issue);
                 return RedirectToAction(nameof(Index));
             }
-            return View(issue);
+
+            return View(createdIssue);
         }
 
         // GET: Issues/Edit/:id
@@ -97,34 +118,39 @@ namespace BeetleTracker.Controllers
                 return NotFound();
             }
 
-            var issue = _repository.GetSingle(id);
+            ViewBag.Users = CreateUsersViewList();
+            var issue = _mapper.Map<EditViewModel>(_issueRepo.GetSingle(id));
             if (issue == null)
             {
                 return NotFound();
             }
+
             return View(issue);
         }
 
         // POST: Issues/Edit/:id
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid id, Issue issue)
+        public ActionResult Edit(Guid id, EditViewModel editIssue)
         {
-            if (id != issue.Id)
+            if (id != editIssue.Id)
             {
                 return NotFound();
             }
-            var oldIssue = _repository.GetSingle(id);
-            issue.Updated = DateTime.Now;
-            issue.Created = oldIssue.Created;
 
             if (ModelState.IsValid)
             {
-                _repository.Update(id, issue);
+                var oldIssue = _issueRepo.GetSingle(id);
+                editIssue.Created = oldIssue.Created;
+
+                var issue = _mapper.Map<Issue>(editIssue);
+                issue.Updated = DateTime.Now;
+
+                _issueRepo.Update(id, issue);
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(issue);
+            return View(editIssue);
         }
 
         // GET: Issues/Delete/:id
@@ -135,11 +161,12 @@ namespace BeetleTracker.Controllers
                 return NotFound();
             }
 
-            var issue = _repository.GetSingle(id);
+            var issue = _mapper.Map<IndexViewModel>(_issueRepo.GetSingle(id));
             if (issue == null)
             {
                 return NotFound();
             }
+
             return View(issue);
         }
 
@@ -150,14 +177,14 @@ namespace BeetleTracker.Controllers
         {
             try
             {
-                var issue = _repository.GetSingle(id);
+                var issue = _issueRepo.GetSingle(id);
 
                 if (issue == null)
                 {
                     return NotFound();
                 }
 
-                _repository.Delete(id);
+                _issueRepo.Delete(id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -175,12 +202,25 @@ namespace BeetleTracker.Controllers
                 return NotFound();
             }
 
-            var issue = _repository.GetSingle(id);
+            var issue = _issueRepo.GetSingle(id);
             if (issue == null)
             {
                 return NotFound();
             }
-            return View(issue);
+            var issueView = _mapper.Map<DetailViewModel>(issue);
+
+            return View(issueView);
+        }
+
+        private List<SelectListItem> CreateUsersViewList()
+        {
+            return _userRepo.GetAll()
+            .Select(x => new SelectListItem
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.UserName
+                })
+            .ToList();
         }
     }
 }

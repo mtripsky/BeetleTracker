@@ -37,7 +37,6 @@ namespace BeetleTracker.Models.Entities
                     return "badge badge-success";
                 default:
                     return "badge badge-light";
-                    //throw new InvalidEnumArgumentException("Not valid status");
             }
         }
     }

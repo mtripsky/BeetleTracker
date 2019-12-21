@@ -10,6 +10,7 @@ namespace BeetleTracker.IoC
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<ProjectProfile>().As<Profile>();
+            builder.RegisterType<IssueProfile>().As<Profile>();
 
             builder.Register(c => new MapperConfiguration(cfg =>
             {

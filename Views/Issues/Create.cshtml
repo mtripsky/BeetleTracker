@@ -1,5 +1,9 @@
-﻿@using BeetleTracker.Models.Entities;
-@model BeetleTracker.Models.Entities.Issue
+﻿@using Syncfusion.EJ2
+@using Syncfusion.EJ2.DropDowns
+@using Newtonsoft.Json
+@using BeetleTracker.Models.Entities;
+
+@model BeetleTracker.Models.IssueViewModels.CreateViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -18,9 +22,9 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class='form-group'>
                 <label asp-for="Reporter" class="control-label"></label>
-                <input asp-for="Reporter" class="form-control" />
+                @Html.EJS().DropDownList("reporter").Placeholder("").DataSource((IEnumerable<SelectListItem>)ViewBag.Users).AllowFiltering(true).Filtering("onUserFiltering").Fields(new Syncfusion.EJ2.DropDowns.DropDownListFieldSettings { Text="Text", Value = "Value" }).Render()
                 <span asp-validation-for="Reporter" class="text-danger"></span>
             </div>
             <div class="form-group">

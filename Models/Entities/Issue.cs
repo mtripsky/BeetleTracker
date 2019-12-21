@@ -14,12 +14,12 @@ namespace BeetleTracker.Models.Entities
         [Required]
         public string Name { get; set; }
 
-        [BsonElement("Reporter")]
+        [BsonElement("ReporterId")]
         [Required]
-        public string Reporter { get; set; }  // string must be replaced by User
+        public Guid ReporterId { get; set; }  
 
-        [BsonElement("Assignee")]
-        public string Assignee { get; set; }  // string must be replaced by User
+        [BsonElement("AssigneeId")]
+        public Guid AssigneeId { get; set; }  
 
         [BsonElement("Type")]
         [Required]
@@ -34,12 +34,10 @@ namespace BeetleTracker.Models.Entities
 
         [BsonElement("Created")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime Created { get; set; }
 
         [BsonElement("Updated")]
         [DataType(DataType.DateTime)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime Updated { get; set; }
 
         [BsonElement("Description")]
