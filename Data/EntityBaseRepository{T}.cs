@@ -44,12 +44,26 @@ namespace BeetleTracker.Data
 
         public T GetSingle(Guid id)
         {
-            return _collection.Find(p => p.Id == id).FirstOrDefault();
+            var entity = _collection.Find(p => p.Id == id).FirstOrDefault();
+
+            if(entity == null)
+            {
+                throw new EntityNotFoundException(nameof(T), id);
+            } 
+
+            return entity;
         }
 
         public T GetSingle(Func<T, bool> predicate)
         {
-            return _collection.AsQueryable().FirstOrDefault(predicate);
+            var entity = _collection.AsQueryable().FirstOrDefault(predicate);
+
+            if(entity == null)
+            {
+                throw new EntityNotFoundException(nameof(T), predicate);
+            } 
+
+            return entity;
         }
 
         public void Update(Guid id, T entity)

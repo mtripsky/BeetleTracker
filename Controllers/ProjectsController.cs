@@ -62,19 +62,12 @@ namespace BeetleTracker.Controllers
         // GET: Projects/Edit/:id
         public ActionResult Edit(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var project = _mapper.Map<EditViewModel>(_projectRepo.GetSingle(id));
-            if (project == null)
-            {
-                return NotFound();
-            }
+            var project = _projectRepo.GetSingle(id);
+            var projectView = _mapper.Map<EditViewModel>(project);
+            
             ViewBag.Users = CreateUsersViewList();
 
-            return View(project);
+            return View(projectView);
         }
 
         // POST: Projects/Edit/:id
@@ -84,8 +77,9 @@ namespace BeetleTracker.Controllers
         {
             if (id != editProject.Id)
             {
-                return NotFound();
+                return BadRequest($"Id {id} does not correspond to {nameof(editProject)} ({id}).");
             }
+
             if (ModelState.IsValid)
             {
                 var project = _mapper.Map<Project>(editProject);
@@ -100,19 +94,10 @@ namespace BeetleTracker.Controllers
         // GET: Projects/Delete/:id
         public ActionResult Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var project = _projectRepo.GetSingle(id);
+            var projectView = _mapper.Map<IndexViewModel>(project);
 
-            var project = _mapper.Map<IndexViewModel>(_projectRepo.GetSingle(id));
-
-            if(project == null)
-            {
-                return NotFound();
-            }
-
-            return View(project);
+            return View(projectView);
         }
 
         // POST: Projects/Delete/:id
@@ -123,12 +108,6 @@ namespace BeetleTracker.Controllers
             try
             {
                 var project = _projectRepo.GetSingle(id);
-
-                if (project == null)
-                {
-                    return NotFound();
-                }
-
                 _projectRepo.Delete(id);
 
                 return RedirectToAction(nameof(Index));
@@ -142,16 +121,7 @@ namespace BeetleTracker.Controllers
         // GET: Projects/Details/:id
         public ActionResult Details(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var project = _projectRepo.GetSingle(id);
-            if (project == null)
-            {
-                return NotFound();
-            }
             var projectView = _mapper.Map<IndexViewModel>(project);
 
             return View(projectView);

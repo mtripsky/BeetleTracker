@@ -7,6 +7,7 @@ using AspNetCore.Identity.MongoDbCore.Infrastructure;
 using AspNetCore.Identity.MongoDbCore.Models;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using BeetleTracker.Controllers.Exceptions;
 using BeetleTracker.IoC;
 using BeetleTracker.Models.Entities;
 using Microsoft.AspNetCore.Builder;
@@ -65,7 +66,9 @@ namespace BeetleTracker
                     .AddMongoDbStores<ApplicationUser, MongoIdentityRole, Guid>(settings.ConnectionString, settings.DatabaseName)
                     .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services
+                .AddMvc(opt => opt.Filters.Add(typeof(ExceptionFilter)))
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // Autofac IoC
             var builder = new ContainerBuilder();

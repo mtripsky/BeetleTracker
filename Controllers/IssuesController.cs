@@ -44,40 +44,19 @@ namespace BeetleTracker.Controllers
                 .GetAll()
                 .Select(i => _mapper.Map<IndexViewModel>(i));
 
-            switch (sortBy)
+            issues = sortBy switch
             {
-                case "Updated desc":
-                    issues = issues.OrderByDescending(x => x.Updated);
-                    break;
-                case "Updated":
-                    issues = issues.OrderBy(x => x.Updated);
-                    break;
-                case "Reporter desc":
-                    issues = issues.OrderByDescending(x => x.Reporter);
-                    break;
-                case "Priority":
-                    issues = issues.OrderBy(x => x.Priority);
-                    break;
-                case "Priority desc":
-                    issues = issues.OrderByDescending(x => x.Priority);
-                    break;
-                case "Reporter":
-                    issues = issues.OrderBy(x => x.Reporter);
-                    break;
-                case "Status desc":
-                    issues = issues.OrderByDescending(x => x.Status);
-                    break;
-                case "Status":
-                    issues = issues.OrderBy(x => x.Status);
-                    break;
-                case "Created desc":
-                    issues = issues.OrderByDescending(x => x.Created);
-                    break;
-                default:
-                    issues = issues.OrderBy(x => x.Created);
-                    break;
-            }
-
+                "Updated desc" => issues.OrderByDescending(x => x.Updated),
+                "Updated" => issues.OrderBy(x => x.Updated),
+                "Reporter desc" => issues.OrderByDescending(x => x.Reporter),
+                "Priority" => issues.OrderBy(x => x.Priority),
+                "Priority desc" => issues.OrderByDescending(x => x.Priority),
+                "Reporter" => issues.OrderBy(x => x.Reporter),
+                "Status desc" => issues.OrderByDescending(x => x.Status),
+                "Status" => issues.OrderBy(x => x.Status),
+                "Created desc" => issues.OrderByDescending(x => x.Created),
+                _ => issues.OrderBy(x => x.Created),
+            };
             return View(issues.ToPagedList(_pageIndex, _pageSize));
         }
 
@@ -113,19 +92,11 @@ namespace BeetleTracker.Controllers
         // GET: Issues/Edit/:id
         public ActionResult Edit(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             ViewBag.Users = CreateUsersViewList();
-            var issue = _mapper.Map<EditViewModel>(_issueRepo.GetSingle(id));
-            if (issue == null)
-            {
-                return NotFound();
-            }
+            var issue = _issueRepo.GetSingle(id);
+            var issueView = _mapper.Map<EditViewModel>(issue);
 
-            return View(issue);
+            return View(issueView);
         }
 
         // POST: Issues/Edit/:id
@@ -135,7 +106,7 @@ namespace BeetleTracker.Controllers
         {
             if (id != editIssue.Id)
             {
-                return NotFound();
+                return BadRequest($"Id {id} does not correspond to {nameof(editIssue)} ({id}).");
             }
 
             if (ModelState.IsValid)
@@ -156,18 +127,10 @@ namespace BeetleTracker.Controllers
         // GET: Issues/Delete/:id
         public ActionResult Delete(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var issue = _issueRepo.GetSingle(id);
+            var issueView = _mapper.Map<IndexViewModel>(issue);
 
-            var issue = _mapper.Map<IndexViewModel>(_issueRepo.GetSingle(id));
-            if (issue == null)
-            {
-                return NotFound();
-            }
-
-            return View(issue);
+            return View(issueView);
         }
 
         // POST: Issues/Delete/:id
@@ -178,12 +141,6 @@ namespace BeetleTracker.Controllers
             try
             {
                 var issue = _issueRepo.GetSingle(id);
-
-                if (issue == null)
-                {
-                    return NotFound();
-                }
-
                 _issueRepo.Delete(id);
 
                 return RedirectToAction(nameof(Index));
@@ -197,16 +154,7 @@ namespace BeetleTracker.Controllers
         // GET: Issues/Details/:id
         public ActionResult Details(Guid id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var issue = _issueRepo.GetSingle(id);
-            if (issue == null)
-            {
-                return NotFound();
-            }
             var issueView = _mapper.Map<DetailViewModel>(issue);
 
             return View(issueView);

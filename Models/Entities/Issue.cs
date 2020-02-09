@@ -43,5 +43,8 @@ namespace BeetleTracker.Models.Entities
         [BsonElement("Description")]
         [DataType(DataType.Text)]
         public string Description { get; set; }
+
+        [BsonElement("Project")]
+        public string ProjectId { get; set; }
     }
 }
